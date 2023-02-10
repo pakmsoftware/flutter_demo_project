@@ -5,7 +5,9 @@ import 'login_text_input.dart';
 
 class NameInput extends StatelessWidget {
   final TextEditingController controller;
-  const NameInput({required this.controller, super.key});
+  final String labelText;
+  const NameInput(
+      {required this.controller, required this.labelText, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,7 @@ class NameInput extends StatelessWidget {
       keyboardType: TextInputType.name,
       maxLength: 50,
       isObscure: false,
+      labelText: labelText,
     );
   }
 }

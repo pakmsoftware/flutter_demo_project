@@ -4,6 +4,8 @@ import 'package:flutter_project/widgets/auth/register_navigation_button.dart';
 import 'package:flutter_project/widgets/auth/sign_button.dart';
 import 'package:flutter_project/widgets/auth/username_input.dart';
 
+import 'input_space_divider.dart';
+
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
@@ -31,7 +33,12 @@ class _LoginFormState extends State<LoginForm> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(
+          bottom: 8,
+          left: 8,
+          right: 8,
+          top: 16,
+        ),
         child: Form(
           key: formKey,
           child: Column(
@@ -39,7 +46,7 @@ class _LoginFormState extends State<LoginForm> {
             children: [
               // username
               UserNameInput(controller: userNameController),
-              const SizedBox(height: 8),
+              const InputSpaceDivider(),
               // password
               PasswordInput(controller: passwordController),
               // button to navigate to registration screen
@@ -59,6 +66,9 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _signIn() {
+    // validate form
+    if (!formKey.currentState!.validate()) return;
+
     // bloc login event
   }
 }

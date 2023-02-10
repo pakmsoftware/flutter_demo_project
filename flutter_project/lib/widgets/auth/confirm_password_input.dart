@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../../utils/validator.dart';
 import 'login_text_input.dart';
 
-class ConfirmPassword extends StatelessWidget {
+class ConfirmPasswordInput extends StatelessWidget {
   final TextEditingController controller;
   final String passwordInput;
-  const ConfirmPassword(
+  const ConfirmPasswordInput(
       {required this.controller, required this.passwordInput, super.key});
 
   @override
@@ -20,6 +20,7 @@ class ConfirmPassword extends StatelessWidget {
       keyboardType: TextInputType.visiblePassword,
       maxLength: 50,
       isObscure: true,
+      labelText: 'Confirm password',
     );
   }
 }
