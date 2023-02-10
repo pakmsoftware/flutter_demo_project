@@ -32,7 +32,7 @@ class Product {
       id: json['id'],
       title: json['title'],
       description: json['description'],
-      price: json['price'],
+      price: ((json['price']) as int).toDouble(),
       discountPercentage: json['discountPercentage'],
       rating: json['rating'],
       stock: json['stock'],
