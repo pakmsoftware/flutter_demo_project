@@ -1,16 +1,20 @@
 import 'package:isar/isar.dart';
 
-part 'session.g.dart';
+part 'user.g.dart';
 
 @collection
-class Session {
+class User {
   Id id = Isar.autoIncrement;
   final String userId;
+  final String firstName;
+  final String lastName;
   String jwtToken;
   final DateTime createdDate;
 
-  Session({
+  User({
     required this.userId,
+    required this.firstName,
+    required this.lastName,
     required this.jwtToken,
     required this.createdDate,
   });

@@ -1,6 +1,6 @@
 import 'package:isar/isar.dart';
 
-import '../collections/session.dart';
+import '../collections/user.dart';
 
 abstract class IsarRepository {
   late Future<Isar> isar;
@@ -11,7 +11,7 @@ abstract class IsarRepository {
   Future<Isar> _initIsarDb() async {
     if (Isar.instanceNames.isEmpty) {
       return await Isar.open(
-        [SessionSchema],
+        [UserSchema],
         inspector: true,
       );
     }
