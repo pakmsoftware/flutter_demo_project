@@ -62,11 +62,14 @@ void main() {
         final signButton = find.byType(SignButton);
         final signButtonText = find.text('Sign In');
 
+        final registerNavButton = find.byType(RegisterNavigationButton);
+
         // assert
         expect(userName, findsOneWidget);
         expect(password, findsOneWidget);
         expect(signButton, findsOneWidget);
         expect(signButtonText, findsOneWidget);
+        expect(registerNavButton, findsOneWidget);
       },
     );
 
