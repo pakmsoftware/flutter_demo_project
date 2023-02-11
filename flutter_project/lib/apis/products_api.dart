@@ -3,6 +3,8 @@ import 'package:flutter_project/apis/dummy_json_api.dart';
 import '../models/product.dart';
 
 class ProductsApi extends DummyJsonApi {
+  ProductsApi(super.httpClient);
+
   @override
   String get collectionName => 'products';
 

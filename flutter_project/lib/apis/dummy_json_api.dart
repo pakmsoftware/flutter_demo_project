@@ -6,6 +6,9 @@ import 'package:http/http.dart' as http;
 // custom client class for dummyjson API
 // check https://dummyjson.com for API documentation
 abstract class DummyJsonApi {
+  final http.Client httpClient;
+
+  DummyJsonApi(this.httpClient);
   String get collectionName;
   static const uriAuthority = 'dummyjson.com';
   static const uriUnencodedPath = '/auth/resource/';
@@ -38,12 +41,13 @@ abstract class DummyJsonApi {
         },
       );
 
-      final response = await http.get(urlWithParameters, headers: headers);
+      final response =
+          await httpClient.get(urlWithParameters, headers: headers);
       List<Map<String, dynamic>> responseJson = jsonDecode(response.body);
       return responseJson;
     } catch (e) {
       log(e.toString());
-      throw Exception(e);
+      rethrow;
     }
   }
 
@@ -57,7 +61,7 @@ abstract class DummyJsonApi {
         postPath,
       );
       final body = jsonEncode(objectJson);
-      final response = await http.post(
+      final response = await httpClient.post(
         uri,
         headers: contentTypeHeader,
         body: body,
@@ -66,7 +70,7 @@ abstract class DummyJsonApi {
       return jsonDecode(response.body);
     } catch (e) {
       log(e.toString());
-      throw Exception(e);
+      rethrow;
     }
   }
 }

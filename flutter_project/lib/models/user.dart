@@ -30,7 +30,7 @@ class User {
       lastName: json['lastName'],
       userName: json['username'],
       jwtToken: json['token'],
-      apiId: json['id'],
+      apiId: json['id'].toString(),
     );
   }
 

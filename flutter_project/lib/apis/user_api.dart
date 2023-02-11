@@ -4,6 +4,8 @@ import 'package:flutter_project/apis/dummy_json_api.dart';
 import 'package:flutter_project/models/user.dart';
 
 class UserApi extends DummyJsonApi {
+  UserApi(super.httpClient);
+
   @override
   String get collectionName => 'users';
 
@@ -18,7 +20,7 @@ class UserApi extends DummyJsonApi {
       return User.fromJson(responseJson);
     } catch (e) {
       log(e.toString());
-      throw Exception(e);
+      rethrow;
     }
   }
 
@@ -36,7 +38,7 @@ class UserApi extends DummyJsonApi {
       return User.fromJson(responseJson);
     } catch (e) {
       log(e.toString());
-      throw Exception(e);
+      rethrow;
     }
   }
 }
