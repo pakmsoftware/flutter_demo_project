@@ -4,8 +4,8 @@ import '../db/collections/user.dart' as db_user;
 class User {
   // apiId returned from dummyjson
   String? apiId;
-  final String firstName;
-  final String lastName;
+  String? firstName;
+  String? lastName;
 
   // username and password to get api token
   String? userName;
@@ -16,8 +16,8 @@ class User {
 
   User({
     this.apiId,
-    required this.firstName,
-    required this.lastName,
+    this.firstName,
+    this.lastName,
     this.userName,
     this.password,
     this.jwtToken,

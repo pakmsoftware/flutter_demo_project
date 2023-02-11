@@ -24,8 +24,8 @@ class User {
   factory User.fromInternal(internal.User user) {
     return User(
       userId: user.apiId!,
-      firstName: user.firstName,
-      lastName: user.lastName,
+      firstName: user.firstName!,
+      lastName: user.lastName!,
       jwtToken: user.jwtToken!,
       createdDate: DateTime.now(),
     );
