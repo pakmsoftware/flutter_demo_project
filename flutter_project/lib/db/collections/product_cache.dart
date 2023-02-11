@@ -1,4 +1,5 @@
 import 'package:flutter_project/models/paged_result_list.dart';
+import 'package:flutter_project/utils/cache_helper.dart';
 import 'package:isar/isar.dart';
 
 import '../../models/product.dart';
@@ -22,7 +23,8 @@ class ProductCache {
   factory ProductCache.fromPagedResultList(
       PagedResultList<Product> serviceResult) {
     return ProductCache(
-      cacheKey: 'pageSize=${serviceResult.pageSize}skip=${serviceResult.skip}',
+      cacheKey:
+          CacheHelper.getCacheKey(serviceResult.pageSize, serviceResult.skip),
       productIdList: serviceResult.elements.map((e) => e.id).toList(),
       expirationDate: DateTime.now().add(
         const Duration(hours: 3),

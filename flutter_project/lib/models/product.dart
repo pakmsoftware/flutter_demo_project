@@ -1,3 +1,5 @@
+import '../db/collections/product.dart' as isar;
+
 class Product {
   final int id;
   final String title;
@@ -42,6 +44,22 @@ class Product {
       category: json['category'],
       thumbnail: json['thumbnail'],
       imageUrls: images,
+    );
+  }
+
+  factory Product.fromIsar(isar.Product dbProduct) {
+    return Product(
+      id: dbProduct.id,
+      title: dbProduct.title,
+      description: dbProduct.description,
+      price: dbProduct.price,
+      discountPercentage: dbProduct.discountPercentage,
+      rating: dbProduct.rating,
+      stock: dbProduct.stock,
+      brand: dbProduct.brand,
+      category: dbProduct.category,
+      thumbnail: dbProduct.thumbnail,
+      imageUrls: dbProduct.imageUrls,
     );
   }
 }
