@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import '../../models/user.dart' as internal;
 
 part 'user.g.dart';
 
@@ -18,4 +19,15 @@ class User {
     required this.jwtToken,
     required this.createdDate,
   });
+
+  // mapping from api model to db model to create and insert the user to the database
+  factory User.fromInternal(internal.User user) {
+    return User(
+      userId: user.apiId!,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      jwtToken: user.jwtToken!,
+      createdDate: DateTime.now(),
+    );
+  }
 }
