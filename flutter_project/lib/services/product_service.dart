@@ -53,7 +53,7 @@ class ProductService {
       );
 
       // update cache
-      if (useCache) _updateCache(pageSize, skip, cacheKey, pagedResult);
+      if (useCache) _updateCache(pagedResult);
 
       // return api_results
       return pagedResult;
@@ -81,9 +81,6 @@ class ProductService {
   }
 
   Future _updateCache(
-    int pageSize,
-    int skip,
-    String cacheKey,
     PagedResultList<Product> apiResults,
   ) async {
     final cacheResult = await _productCacheRepository.updateProductCache(
