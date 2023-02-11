@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_project/apis/dummy_json_api.dart';
 
 import '../models/product.dart';
@@ -12,10 +14,15 @@ class ProductsApi extends DummyJsonApi {
     int pageSize = 10,
     int skip = 0,
   }) async {
-    final jsonResponse =
-        await getObjectsPaginated(pageSize: pageSize, skip: skip);
-    final mappedResponse =
-        jsonResponse.map((e) => Product.fromJson(e)).toList();
-    return mappedResponse;
+    try {
+      final jsonResponse =
+          await getObjectsPaginated(pageSize: pageSize, skip: skip);
+      final mappedResponse =
+          jsonResponse.map((e) => Product.fromJson(e)).toList();
+      return mappedResponse;
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
   }
 }

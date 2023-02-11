@@ -36,15 +36,19 @@ abstract class DummyJsonApi {
         uriAuthority,
         uriUnencodedPath + collectionName,
         {
-          'limit': pageSize,
-          'skip': skip,
+          'limit': '$pageSize',
+          'skip': '$skip',
         },
       );
 
       final response =
           await httpClient.get(urlWithParameters, headers: headers);
-      List<Map<String, dynamic>> responseJson = jsonDecode(response.body);
-      return responseJson;
+      List<dynamic> responseJson = jsonDecode(response.body);
+      final mapElements = responseJson
+          .map((element) => element as Map<String, dynamic>)
+          .toList();
+
+      return mapElements;
     } catch (e) {
       log(e.toString());
       rethrow;

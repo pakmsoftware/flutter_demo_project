@@ -28,6 +28,8 @@ class Product {
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
+    List<String> images =
+        (json['images'] as List<dynamic>).map((e) => e.toString()).toList();
     return Product(
       id: json['id'],
       title: json['title'],
@@ -39,7 +41,7 @@ class Product {
       brand: json['brand'],
       category: json['category'],
       thumbnail: json['thumbnail'],
-      imageUrls: json['images'],
+      imageUrls: images,
     );
   }
 }
