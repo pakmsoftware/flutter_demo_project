@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter_project/apis/user_api.dart';
+import 'package:flutter_project/db/repositories/product_cache_repository.dart';
+import 'package:flutter_project/db/repositories/product_repository.dart';
 import 'package:flutter_project/db/repositories/user_repository.dart';
 import 'package:flutter_project/models/user.dart';
 
@@ -8,11 +10,15 @@ import '../db/collections/user.dart' as isar;
 
 class AuthService {
   final UserRepository _userRepository;
+  final ProductRepository _productRepository;
+  final ProductCacheRepository _productCacheRepository;
   final UserApi _userApi;
 
   AuthService(
     this._userApi,
     this._userRepository,
+    this._productRepository,
+    this._productCacheRepository,
   );
 
   Future<User> login(String userName, String password) async {
@@ -35,12 +41,16 @@ class AuthService {
     try {
       // delete all data during logout
       // delete user data
-      final isUserDeleted = await _userRepository.deleteUser();
+      final isUserDeleteTask = _userRepository.deleteUser();
+      // delete all stored products
+      final areProductsDeletedTask = _productRepository.deleteAllProducts();
+      // delete product cache
+      final isProductCacheDeleted =
+          _productCacheRepository.deleteAllProductCache();
+      final deleteTasksResult = await Future.wait(
+          [isUserDeleteTask, areProductsDeletedTask, isProductCacheDeleted]);
 
-      // delete cached data - products
-
-      // return deleted tasks
-      return isUserDeleted;
+      return !deleteTasksResult.any((e) => !e);
     } catch (e) {
       log(e.toString());
       throw Exception(e);

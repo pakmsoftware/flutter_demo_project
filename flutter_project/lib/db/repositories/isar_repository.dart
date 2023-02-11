@@ -1,3 +1,5 @@
+import 'package:flutter_project/db/collections/product.dart';
+import 'package:flutter_project/db/collections/product_cache.dart';
 import 'package:isar/isar.dart';
 
 import '../collections/user.dart';
@@ -11,7 +13,11 @@ abstract class IsarRepository {
   Future<Isar> _initIsarDb() async {
     if (Isar.instanceNames.isEmpty) {
       return await Isar.open(
-        [UserSchema],
+        [
+          UserSchema,
+          ProductSchema,
+          ProductCacheSchema,
+        ],
         inspector: true,
       );
     }
