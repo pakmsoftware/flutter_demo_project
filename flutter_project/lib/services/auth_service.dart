@@ -21,6 +21,28 @@ class AuthService {
     this._productCacheRepository,
   );
 
+  Future<User> register({
+    required String username,
+    required String password,
+    required String firstName,
+    required String lastName,
+  }) async {
+    try {
+      final userToRegister = User(
+        userName: username,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+      );
+
+      await _userApi.addUser(userToRegister);
+      return await login(userToRegister.userName!, userToRegister.password!);
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
   Future<User> login(String userName, String password) async {
     try {
       final userToLogin = User(userName: userName, password: password);
@@ -33,7 +55,7 @@ class AuthService {
       return loggedUser;
     } catch (e) {
       log(e.toString());
-      throw Exception(e);
+      rethrow;
     }
   }
 
@@ -53,7 +75,7 @@ class AuthService {
       return !deleteTasksResult.any((e) => !e);
     } catch (e) {
       log(e.toString());
-      throw Exception(e);
+      rethrow;
     }
   }
 }

@@ -8,7 +8,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_project/models/user.dart';
 
-import '../../lib/db/collections/user.dart' as isar;
 import 'auth_service_test.mocks.dart';
 
 @GenerateMocks(
@@ -154,6 +153,69 @@ void main() {
         expect(response, true);
       });
     });
-    group('register', () {});
+    group('register', () {
+      test('throws exception if user api fails', () {
+        //setup mock
+        final userApiMock = MockUserApi();
+        final userRepoMock = MockUserRepository();
+        final productRepoMock = MockProductRepository();
+        final productCacheMock = MockProductCacheRepository();
+
+        // mock exception throwing
+        when(userApiMock.addUser(any)).thenThrow(Exception());
+
+        final authService = AuthService(
+          userApiMock,
+          userRepoMock,
+          productRepoMock,
+          productCacheMock,
+        );
+
+        final response = authService.register(
+          username: 'username',
+          password: 'password',
+          firstName: 'firstName',
+          lastName: 'lastName',
+        );
+        expect(response, throwsException);
+      });
+      test('returns user with username, names and jwtToken', () async {
+        // setup mock users
+        const username = 'username1';
+        const password = 'password1';
+
+        final userApiResponse = User(
+          firstName: 'first name',
+          lastName: 'last name',
+          userName: username,
+          jwtToken: 'token',
+          apiId: '12',
+        );
+        //setup mock
+        final userApiMock = MockUserApi();
+        final userRepoMock = MockUserRepository();
+        final productRepoMock = MockProductRepository();
+        final productCacheMock = MockProductCacheRepository();
+        when(userApiMock.addUser(any)).thenAnswer((_) async => userApiResponse);
+        when(userApiMock.loginUser(any))
+            .thenAnswer((_) async => userApiResponse);
+        when(userRepoMock.addUser(any)).thenAnswer((_) async {});
+
+        final authService = AuthService(
+          userApiMock,
+          userRepoMock,
+          productRepoMock,
+          productCacheMock,
+        );
+
+        final response = await authService.register(
+          username: username,
+          password: password,
+          firstName: userApiResponse.firstName!,
+          lastName: userApiResponse.lastName!,
+        );
+        expect(response, userApiResponse);
+      });
+    });
   });
 }
