@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 
+// custom client class for dummyjson API
+// check https://dummyjson.com for API documentation
 abstract class DummyJsonApi {
   String get collectionName;
   static const uriAuthority = 'dummyjson.com';
@@ -60,6 +62,7 @@ abstract class DummyJsonApi {
         headers: contentTypeHeader,
         body: body,
       );
+      // when 200 code is returned
       return jsonDecode(response.body);
     } catch (e) {
       log(e.toString());
