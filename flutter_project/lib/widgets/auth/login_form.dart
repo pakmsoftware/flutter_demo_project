@@ -1,27 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/providers/auth_provider.dart';
 import 'package:flutter_project/widgets/auth/password_input.dart';
 import 'package:flutter_project/widgets/auth/register_navigation_button.dart';
 import 'package:flutter_project/widgets/auth/sign_button.dart';
 import 'package:flutter_project/widgets/auth/username_input.dart';
+import 'package:flutter_project/widgets/spinner.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 
 import 'input_space_divider.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class LoginForm extends StatefulWidget with GetItStatefulWidgetMixin {
+  LoginForm({super.key});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _LoginFormState extends State<LoginForm> with GetItStateMixin {
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late bool isSubmitting;
 
   @override
   void dispose() {
     userNameController.dispose();
     passwordController.dispose();
+    isSubmitting = watchOnly((AuthProvider a) => a.isSubmitting);
     super.dispose();
   }
 
@@ -54,10 +59,12 @@ class _LoginFormState extends State<LoginForm> {
                 alignment: Alignment.centerRight,
                 child: RegisterNavigationButton(),
               ),
-              SignButton(
-                text: 'Sign In',
-                onClickFn: () => _signIn(),
-              ),
+              isSubmitting
+                  ? const Spinner()
+                  : SignButton(
+                      text: 'Sign In',
+                      onClickFn: () => _signIn(),
+                    ),
             ],
           ),
         ),
@@ -69,6 +76,10 @@ class _LoginFormState extends State<LoginForm> {
     // validate form
     if (!formKey.currentState!.validate()) return;
 
-    // bloc login event
+    // provider login event
+    get<AuthProvider>().login(
+      userNameController.text.trim(),
+      passwordController.text.trim(),
+    );
   }
 }

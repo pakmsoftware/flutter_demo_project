@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project/screens/login_screen.dart';
+import 'package:flutter_project/get_it/service_locator.dart';
+import 'package:flutter_project/screens/home_screen.dart';
 import 'package:flutter_project/utils/routes.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await ServiceLocator.initAllSingletons();
   runApp(const MyApp());
 }
 
@@ -19,12 +21,13 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.teal.shade900,
         ),
+        scaffoldBackgroundColor: Colors.teal.shade800,
         colorScheme: const ColorScheme.dark(
           primary: Colors.teal,
         ),
       ),
       routes: Routes.allRoutes,
-      home: const LoginScreen(),
+      home: HomeScreen(),
     );
   }
 }

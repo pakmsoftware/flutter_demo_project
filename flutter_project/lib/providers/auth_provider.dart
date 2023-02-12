@@ -13,10 +13,20 @@ class AuthProvider extends ChangeNotifier {
   User get user => _user!;
   bool get isLoggedIn => _user != null;
   String? get jwtToken => _user?.jwtToken;
+  bool isSubmitting = false;
+
+  Future<User?> initializeOnStartup() async {
+    final existingUser = await _authService.getInitialUser();
+    _user = existingUser;
+    return existingUser;
+  }
 
   Future login(String userName, String password) async {
+    isSubmitting = true;
+    notifyListeners();
     final user = await _authService.login(userName, password);
     _user = user;
+    isSubmitting = false;
     notifyListeners();
   }
 
@@ -26,6 +36,8 @@ class AuthProvider extends ChangeNotifier {
     required String firstName,
     required String lastName,
   }) async {
+    isSubmitting = true;
+    notifyListeners();
     final user = await _authService.register(
       username: username,
       password: password,
@@ -33,6 +45,7 @@ class AuthProvider extends ChangeNotifier {
       lastName: lastName,
     );
     _user = user;
+    isSubmitting = false;
     notifyListeners();
   }
 

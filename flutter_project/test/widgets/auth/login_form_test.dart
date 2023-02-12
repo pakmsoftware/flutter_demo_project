@@ -53,7 +53,7 @@ void main() {
         // init form
         await TestHelper.pumpMaterialAppWidget(
           widgetTester: widgetTester,
-          homeWidget: const LoginForm(),
+          homeWidget: LoginForm(),
         );
 
         // find inputs
@@ -79,7 +79,7 @@ void main() {
         // init form
         await TestHelper.pumpMaterialAppWidget(
           widgetTester: widgetTester,
-          homeWidget: const LoginForm(),
+          homeWidget: LoginForm(),
         );
 
         // find inputs

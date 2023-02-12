@@ -39,13 +39,19 @@ class ProductProvider extends ChangeNotifier {
     _isSearching = true;
     notifyListeners();
 
-    final pageResults = await _productService.getProductsPaginated(
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-    );
-    _allResults.addAll(pageResults.elements);
-    _currentPageList = pageResults;
-    _isSearching = false;
-    notifyListeners();
+    try {
+      final pageResults = await _productService.getProductsPaginated(
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+      );
+      _allResults.addAll(pageResults.elements);
+      _currentPageList = pageResults;
+      _isSearching = false;
+      notifyListeners();
+    } catch (e) {
+      _isSearching = false;
+      notifyListeners();
+      rethrow;
+    }
   }
 }

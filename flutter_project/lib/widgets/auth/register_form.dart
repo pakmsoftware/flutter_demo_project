@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/providers/auth_provider.dart';
 import 'package:flutter_project/widgets/auth/confirm_password_input.dart';
 import 'package:flutter_project/widgets/auth/input_space_divider.dart';
 import 'package:flutter_project/widgets/auth/name_input.dart';
 import 'package:flutter_project/widgets/auth/password_input.dart';
 import 'package:flutter_project/widgets/auth/sign_button.dart';
 import 'package:flutter_project/widgets/auth/username_input.dart';
+import 'package:flutter_project/widgets/spinner.dart';
+import 'package:get_it/get_it.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 
-class RegisterForm extends StatefulWidget {
-  const RegisterForm({super.key});
+class RegisterForm extends StatefulWidget with GetItStatefulWidgetMixin {
+  RegisterForm({super.key});
 
   @override
   State<RegisterForm> createState() => _RegisterFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class _RegisterFormState extends State<RegisterForm> with GetItStateMixin {
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late bool isSubmitting;
 
   @override
   void dispose() {
@@ -28,6 +33,7 @@ class _RegisterFormState extends State<RegisterForm> {
     confirmPasswordController.dispose();
     firstNameController.dispose();
     lastNameController.dispose();
+    isSubmitting = watchOnly((AuthProvider a) => a.isSubmitting);
     super.dispose();
   }
 
@@ -79,10 +85,12 @@ class _RegisterFormState extends State<RegisterForm> {
               const InputSpaceDivider(),
 
               // button to navigate to registration screen
-              SignButton(
-                text: 'Sign Up',
-                onClickFn: () => _register(),
-              ),
+              isSubmitting
+                  ? const Spinner()
+                  : SignButton(
+                      text: 'Sign Up',
+                      onClickFn: () => _register(),
+                    ),
             ],
           ),
         ),
@@ -94,6 +102,12 @@ class _RegisterFormState extends State<RegisterForm> {
     // validate form
     if (!formKey.currentState!.validate()) return;
 
-    // bloc register event
+    // provider register event
+    GetIt.instance<AuthProvider>().register(
+      username: userNameController.text.trim(),
+      password: passwordController.text.trim(),
+      firstName: firstNameController.text.trim(),
+      lastName: lastNameController.text.trim(),
+    );
   }
 }

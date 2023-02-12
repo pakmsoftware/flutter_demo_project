@@ -13,7 +13,7 @@ class RegistrationScreen extends StatelessWidget {
         centerTitle: true,
         title: const Text('Register'),
       ),
-      body: const GradientScreenContainer(
+      body: GradientScreenContainer(
         child: SingleChildScrollView(
           child: RegisterForm(),
         ),
