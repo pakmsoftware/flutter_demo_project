@@ -20,6 +20,7 @@ class AuthProvider extends ChangeNotifier {
   Future<User?> initializeOnStartup() async {
     final existingUser = await _authService.getInitialUser();
     _user = existingUser;
+    notifyListeners();
     return existingUser;
   }
 
