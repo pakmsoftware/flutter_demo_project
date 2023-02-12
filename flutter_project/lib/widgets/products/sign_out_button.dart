@@ -8,8 +8,8 @@ class SignOutButton extends StatelessWidget with GetItMixin {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 20,
-      child: ElevatedButton.icon(
+      height: 10,
+      child: IconButton(
         onPressed: () {
           get<AuthProvider>().logout().then((value) {
             if (value != null) {
@@ -26,7 +26,8 @@ class SignOutButton extends StatelessWidget with GetItMixin {
           });
         },
         icon: const Icon(Icons.logout),
-        label: const Text('Sign Out'),
+        // label: const Text('Sign Out'),
+        //style: ElevatedButton.styleFrom(visualDensity: VisualDensity.compact),
       ),
     );
   }

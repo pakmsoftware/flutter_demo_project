@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/extensions/double_extension.dart';
 import 'package:flutter_project/widgets/products/product_discount_badge.dart';
-import 'package:flutter_project/widgets/products/product_rating.dart';
 
 import '../../models/product.dart';
 
