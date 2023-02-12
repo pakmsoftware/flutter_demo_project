@@ -1,5 +1,6 @@
 import 'package:flutter_project/apis/products_api.dart';
 import 'package:flutter_project/db/collections/product.dart';
+import 'package:flutter_project/models/product.dart' as api;
 import 'package:flutter_project/db/collections/product_cache.dart';
 import 'package:flutter_project/db/repositories/product_cache_repository.dart';
 import 'package:flutter_project/db/repositories/product_repository.dart';
@@ -74,6 +75,68 @@ void main() {
           expect(returnedProduct.imageUrls, expectedProduct.imageUrls);
         }
       });
+
+      test('returns Products from repository if cache disabled', () async {
+        const expectedPageSize = 10;
+        const expectedPageNumber = 0;
+        // setup mocks
+        final mockProductsApi = MockProductsApi();
+        final mockProductCacheRepo = MockProductCacheRepository();
+        final mockProductRepo = MockProductRepository();
+
+        // mock caching get operations
+        when(mockProductsApi.getProductsPaginated(
+                pageSize: anyNamed('pageSize'), skip: anyNamed('skip')))
+            .thenAnswer(
+          (_) async => _apiProducts,
+        );
+
+        // init service
+        final service = ProductService(
+          mockProductsApi,
+          mockProductCacheRepo,
+          mockProductRepo,
+        );
+
+        // act
+        final result = await service.getProductsPaginated(
+          useCache: false,
+          pageSize: expectedPageSize,
+          pageNumber: expectedPageNumber,
+        );
+
+        // verify api called once and cache repos never
+        verifyNever(mockProductCacheRepo.getProductCache(any));
+        verifyNever(mockProductRepo.getProductsByIds(any));
+        verify(
+          mockProductsApi.getProductsPaginated(
+            pageSize: anyNamed('pageSize'),
+            skip: anyNamed('skip'),
+          ),
+        ).called(1);
+
+        // check response data
+        expect(result.elements.length, _apiProducts.length);
+        expect(result.pageNumber, expectedPageNumber);
+        expect(result.pageSize, expectedPageSize);
+        // check returned products
+        for (var i = 0; i < result.elements.length; i++) {
+          final returnedProduct = result.elements[i];
+          final expectedProduct = _apiProducts[i];
+          expect(returnedProduct.id, expectedProduct.id);
+          expect(returnedProduct.title, expectedProduct.title);
+          expect(returnedProduct.description, expectedProduct.description);
+          expect(returnedProduct.price, expectedProduct.price);
+          expect(returnedProduct.discountPercentage,
+              expectedProduct.discountPercentage);
+          expect(returnedProduct.rating, expectedProduct.rating);
+          expect(returnedProduct.stock, expectedProduct.stock);
+          expect(returnedProduct.brand, expectedProduct.brand);
+          expect(returnedProduct.category, expectedProduct.category);
+          expect(returnedProduct.thumbnail, expectedProduct.thumbnail);
+          expect(returnedProduct.imageUrls, expectedProduct.imageUrls);
+        }
+      });
     });
   });
 }
@@ -89,6 +152,23 @@ ProductCache get _productCacheData => ProductCache(
 List<Product> get _cacheProducts => List.generate(
       3,
       (index) => Product(
+        id: index + 1,
+        title: 'title',
+        description: 'description',
+        price: 12.0,
+        discountPercentage: 10,
+        rating: 4.5,
+        stock: 32,
+        brand: 'brand',
+        category: 'category',
+        thumbnail: 'thumbnail',
+        imageUrls: ['1', '2', '3'],
+      ),
+    );
+
+List<api.Product> get _apiProducts => List.generate(
+      3,
+      (index) => api.Product(
         id: index + 1,
         title: 'title',
         description: 'description',
