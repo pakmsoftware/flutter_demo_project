@@ -9,12 +9,15 @@ class ProductProvider extends ChangeNotifier {
 
   ProductProvider(this._productService);
 
+  // for details screen
   Product? _selectedProduct;
   Product? get selectedProduct => _selectedProduct;
 
+  // for circula progress indicator
   bool _isSearching = false;
   bool get isSearching => _isSearching;
 
+  // current page
   PagedResultList<Product>? _currentPageList;
   PagedResultList<Product> get currentPageList =>
       _currentPageList ??
@@ -23,8 +26,10 @@ class ProductProvider extends ChangeNotifier {
         pageNumber: Configuration.defaultPageNumber,
         elements: [],
       );
+  bool get hasMorePages => _currentPageList?.hasMorePages ?? false;
 
-  List<Product> _allResults = [];
+  // all products
+  final List<Product> _allResults = [];
   List<Product> get allProducts => _allResults;
 
   void getProducts(
@@ -34,6 +39,12 @@ class ProductProvider extends ChangeNotifier {
     _isSearching = true;
     notifyListeners();
 
+    final pageResults = await _productService.getProductsPaginated(
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+    );
+    _allResults.addAll(pageResults.elements);
+    _currentPageList = pageResults;
     _isSearching = false;
     notifyListeners();
   }

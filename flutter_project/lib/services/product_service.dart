@@ -7,6 +7,7 @@ import 'package:flutter_project/db/repositories/product_repository.dart';
 import 'package:flutter_project/models/paged_result_list.dart';
 import 'package:flutter_project/models/product.dart';
 import 'package:flutter_project/utils/cache_helper.dart';
+import 'package:flutter_project/utils/configuration.dart';
 import '../db/collections/product.dart' as isar;
 
 class ProductService {
@@ -21,8 +22,8 @@ class ProductService {
   );
 
   Future<PagedResultList<Product>> getProductsPaginated({
-    int pageSize = 10,
-    int pageNumber = 0,
+    int pageSize = Configuration.defaultPageSize,
+    int pageNumber = Configuration.defaultPageNumber,
     bool useCache = true,
   }) async {
     try {
