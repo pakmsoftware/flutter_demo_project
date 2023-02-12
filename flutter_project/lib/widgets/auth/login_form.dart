@@ -23,10 +23,16 @@ class _LoginFormState extends State<LoginForm> with GetItStateMixin {
   late bool isSubmitting;
 
   @override
+  void initState() {
+    super.initState();
+    isSubmitting = watchOnly((AuthProvider a) => a.isSubmitting);
+  }
+
+  @override
   void dispose() {
     userNameController.dispose();
     passwordController.dispose();
-    isSubmitting = watchOnly((AuthProvider a) => a.isSubmitting);
+
     super.dispose();
   }
 

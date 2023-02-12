@@ -3,6 +3,8 @@ import 'package:flutter_project/apis/user_api.dart';
 import 'package:flutter_project/db/repositories/product_cache_repository.dart';
 import 'package:flutter_project/db/repositories/product_repository.dart';
 import 'package:flutter_project/db/repositories/user_repository.dart';
+import 'package:flutter_project/providers/auth_provider.dart';
+import 'package:flutter_project/providers/product_provider.dart';
 import 'package:flutter_project/services/auth_service.dart';
 import 'package:flutter_project/services/product_service.dart';
 import 'package:get_it/get_it.dart';
@@ -22,6 +24,8 @@ class ServiceLocator {
     // apis
     GetIt.I.registerLazySingleton<ProductsApi>(
         () => ProductsApi(GetIt.instance<http.Client>()));
+    GetIt.I.registerLazySingleton<UserApi>(
+        () => UserApi(GetIt.instance<http.Client>()));
 
     // services
     GetIt.I.registerLazySingleton<AuthService>(
@@ -41,5 +45,9 @@ class ServiceLocator {
     );
 
     // change notifiers (providers)
+    GetIt.I.registerLazySingleton<AuthProvider>(
+        () => AuthProvider(GetIt.instance<AuthService>()));
+    GetIt.I.registerLazySingleton<ProductProvider>(
+        () => ProductProvider(GetIt.instance<ProductService>()));
   }
 }

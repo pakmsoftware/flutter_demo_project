@@ -27,13 +27,19 @@ class _RegisterFormState extends State<RegisterForm> with GetItStateMixin {
   late bool isSubmitting;
 
   @override
+  void initState() {
+    super.initState();
+    isSubmitting = watchOnly((AuthProvider a) => a.isSubmitting);
+  }
+
+  @override
   void dispose() {
     userNameController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
     firstNameController.dispose();
     lastNameController.dispose();
-    isSubmitting = watchOnly((AuthProvider a) => a.isSubmitting);
+
     super.dispose();
   }
 
