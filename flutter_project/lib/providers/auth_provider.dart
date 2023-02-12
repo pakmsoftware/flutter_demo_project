@@ -14,6 +14,8 @@ class AuthProvider extends ChangeNotifier {
   bool get isLoggedIn => _user != null;
   String? get jwtToken => _user?.jwtToken;
   bool isSubmitting = false;
+  String? _errorMessage;
+  String? get errorMessage => _errorMessage;
 
   Future<User?> initializeOnStartup() async {
     final existingUser = await _authService.getInitialUser();
@@ -24,8 +26,14 @@ class AuthProvider extends ChangeNotifier {
   Future login(String userName, String password) async {
     isSubmitting = true;
     notifyListeners();
-    final user = await _authService.login(userName, password);
-    _user = user;
+    try {
+      final user = await _authService.login(userName, password);
+      _user = user;
+      _errorMessage = null;
+    } catch (e) {
+      _errorMessage = ErrorHelper.defaultErrorText;
+    }
+
     isSubmitting = false;
     notifyListeners();
   }
@@ -56,7 +64,7 @@ class AuthProvider extends ChangeNotifier {
     }
 
     // else dispose and notify listeners
-    dispose();
+    _user = null;
     notifyListeners();
     return null;
   }

@@ -32,19 +32,28 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) {
     List<String> images =
         (json['images'] as List<dynamic>).map((e) => e.toString()).toList();
+    final price = _mapNumber(json['price']);
+    final rating = _mapNumber(json['rating']);
     return Product(
       id: json['id'],
       title: json['title'],
       description: json['description'],
-      price: ((json['price']) as int).toDouble(),
+      price: price,
       discountPercentage: json['discountPercentage'],
-      rating: json['rating'],
+      rating: rating,
       stock: json['stock'],
       brand: json['brand'],
       category: json['category'],
       thumbnail: json['thumbnail'],
       imageUrls: images,
     );
+  }
+
+  static double _mapNumber(dynamic numValue) {
+    final intValue = int.tryParse(numValue.toString());
+    if (intValue != null) return intValue.toDouble();
+
+    return numValue as double;
   }
 
   factory Product.fromIsar(isar.Product dbProduct) {

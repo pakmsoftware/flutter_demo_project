@@ -32,11 +32,12 @@ class HomeScreen extends StatelessWidget with GetItMixin {
 
   Widget _buildLoginOrProductsScreen() {
     final isLogged = watchOnly((AuthProvider a) {
-      if (a.isLoggedIn) {
-        get<ProductProvider>().getProducts(0);
-      }
       return a.isLoggedIn;
     });
-    return isLogged ? const ProductListScreen() : const LoginScreen();
+    if (isLogged) {
+      get<ProductProvider>().getProducts(0);
+      return const ProductListScreen();
+    }
+    return const LoginScreen();
   }
 }

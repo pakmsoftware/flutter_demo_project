@@ -13,7 +13,7 @@ abstract class DummyJsonApi {
   DummyJsonApi(this.httpClient);
   String get collectionName;
   static const uriAuthority = 'dummyjson.com';
-  static const uriUnencodedPath = '/auth/resource/';
+  static const uriUnencodedPath = '/auth/';
   static const Map<String, String> contentTypeHeader = {
     'Content-Type': 'application/json'
   };
@@ -44,7 +44,9 @@ abstract class DummyJsonApi {
 
       final response =
           await httpClient.get(urlWithParameters, headers: headers);
-      List<dynamic> responseJson = jsonDecode(response.body);
+      if (response.statusCode != 200) throw Exception();
+      final responseMap = jsonDecode(response.body);
+      List<dynamic> responseJson = responseMap[collectionName];
       final mapElements = responseJson
           .map((element) => element as Map<String, dynamic>)
           .toList();
@@ -71,6 +73,7 @@ abstract class DummyJsonApi {
         headers: contentTypeHeader,
         body: body,
       );
+      if (response.statusCode != 200) throw Exception();
       // when 200 code is returned
       return jsonDecode(response.body);
     } catch (e) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/providers/auth_provider.dart';
+import 'package:flutter_project/utils/error_helper.dart';
 import 'package:flutter_project/widgets/auth/password_input.dart';
 import 'package:flutter_project/widgets/auth/register_navigation_button.dart';
 import 'package:flutter_project/widgets/auth/sign_button.dart';
@@ -21,11 +22,11 @@ class _LoginFormState extends State<LoginForm> with GetItStateMixin {
   TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late bool isSubmitting;
+  String? errorMessage;
 
   @override
   void initState() {
     super.initState();
-    isSubmitting = watchOnly((AuthProvider a) => a.isSubmitting);
   }
 
   @override
@@ -38,6 +39,8 @@ class _LoginFormState extends State<LoginForm> with GetItStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    isSubmitting = watchOnly((AuthProvider a) => a.isSubmitting);
+    errorMessage = watchOnly((AuthProvider a) => a.errorMessage);
     return Card(
       margin: const EdgeInsets.all(20),
       shape: RoundedRectangleBorder(
@@ -71,6 +74,8 @@ class _LoginFormState extends State<LoginForm> with GetItStateMixin {
                       text: 'Sign In',
                       onClickFn: () => _signIn(),
                     ),
+              if (errorMessage != null)
+                const Text(ErrorHelper.defaultErrorText),
             ],
           ),
         ),

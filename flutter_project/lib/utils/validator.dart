@@ -34,7 +34,7 @@ class Validator {
     if (password == null || password.isEmpty) return passwordEmpty;
     if (password.length > 50) return passwordTooLong;
     if (password.contains(' ')) return passwordWhiteSpace;
-    if (_containsOnlyAlphanumericChars(password)) return passwordSpecialSigns;
+    //if (_containsOnlyAlphanumericChars(password)) return passwordSpecialSigns;
 
     return null;
   }

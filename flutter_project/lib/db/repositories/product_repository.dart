@@ -34,7 +34,9 @@ class ProductRepository extends IsarRepository {
   Future<bool> deleteAllProducts() async {
     try {
       final db = await isar;
-      await db.products.where().deleteAll();
+      await db.writeTxn(() async {
+        await db.products.where().deleteAll();
+      });
       return true;
     } catch (e) {
       log(e.toString());

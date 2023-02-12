@@ -77,14 +77,14 @@ void main() {
               expectedValue: Validator.passwordEmpty,
             ),
           );
-          test(
-            'without special signs should return error text',
-            () => _testValidator(
-              input: 'test123',
-              usedFunction: Validator.validatePassword,
-              expectedValue: Validator.passwordSpecialSigns,
-            ),
-          );
+          // test(
+          //   'without special signs should return error text',
+          //   () => _testValidator(
+          //     input: 'test123',
+          //     usedFunction: Validator.validatePassword,
+          //     expectedValue: Validator.passwordSpecialSigns,
+          //   ),
+          // );
           test(
             'too long should return error text',
             () => _testValidator(

@@ -24,8 +24,10 @@ class UserRepository extends IsarRepository {
   Future<bool> deleteUser() async {
     try {
       final db = await isar;
-      final deletedUsers = await db.users.where().deleteAll();
-      return deletedUsers > 0;
+      await db.writeTxn(() async {
+        await db.users.where().deleteAll();
+      });
+      return true;
     } catch (e) {
       log(e.toString());
       return false;

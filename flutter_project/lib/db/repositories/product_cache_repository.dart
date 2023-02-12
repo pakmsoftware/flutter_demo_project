@@ -43,7 +43,9 @@ class ProductCacheRepository extends IsarRepository {
   Future<bool> deleteAllProductCache() async {
     try {
       final db = await isar;
-      await db.productCaches.where().deleteAll();
+      await db.writeTxn(() async {
+        await db.productCaches.where().deleteAll();
+      });
       return true;
     } catch (e) {
       log(e.toString());
