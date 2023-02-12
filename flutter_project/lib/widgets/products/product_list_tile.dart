@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/screens/product_details_screen.dart';
 
 import '../../models/product.dart';
 
@@ -18,6 +19,11 @@ class ProductListTile extends StatelessWidget {
       ),
       title: Text(product.title),
       trailing: Text('${product.price} \$'),
+      onTap: () => _goToDetailsScreen(context),
     );
+  }
+
+  void _goToDetailsScreen(BuildContext context) {
+    Navigator.of(context).pushNamed(ProductDetailsScreen.routeName);
   }
 }

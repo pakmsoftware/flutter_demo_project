@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/home_screen.dart';
 import 'package:flutter_project/screens/login_screen.dart';
+import 'package:flutter_project/screens/product_details_screen.dart';
 import 'package:flutter_project/screens/product_list_screen.dart';
 import 'package:flutter_project/screens/registration_screen.dart';
 
@@ -10,5 +11,6 @@ class Routes {
     RegistrationScreen.routeName: (ctx) => const RegistrationScreen(),
     HomeScreen.routeName: (ctx) => HomeScreen(),
     ProductListScreen.routeName: (ctx) => const ProductListScreen(),
+    ProductDetailsScreen.routeName: (ctx) => const ProductDetailsScreen(),
   };
 }
