@@ -9,8 +9,7 @@ class SearchBar extends StatelessWidget {
     return TextFormField(
       controller: controller,
       decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.search),
-      ),
+          prefixIcon: Icon(Icons.search), hintText: 'Search...'),
       onChanged: (value) {
         // call search function from provider
       },
