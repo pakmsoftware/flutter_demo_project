@@ -1,15 +1,25 @@
 import 'dart:convert';
 
 import 'package:flutter_project/apis/products_api.dart';
+import 'package:flutter_project/providers/auth_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 
 import 'products_api_test.mocks.dart';
 
-@GenerateMocks([http.Client])
+@GenerateMocks([http.Client, AuthProvider])
 void main() {
+  setUpAll(() async {
+    final authProvider = MockAuthProvider();
+    when(authProvider.jwtToken).thenAnswer((_) => '');
+    GetIt.I.registerLazySingleton<AuthProvider>(() => authProvider);
+  });
+  tearDownAll(() async {
+    GetIt.I.reset();
+  });
   group('ProductsApi', () {
     group('getProductsPaginated', () {
       test('throwsException if response not 200', () {
@@ -23,7 +33,7 @@ void main() {
       });
       test('returns products if response 200', () async {
         // setup mock response
-        final mockResponseJson = List.generate(
+        final mockResponseJsonProducts = List.generate(
           10,
           (index) => {
             'id': index,
@@ -40,6 +50,10 @@ void main() {
           },
         );
 
+        final mockResponseJson = {
+          'products': mockResponseJsonProducts,
+        };
+
         final mockResponse = jsonEncode(mockResponseJson);
 
         // setup client
@@ -49,10 +63,10 @@ void main() {
 
         final api = ProductsApi(client);
         final products = await api.getProductsPaginated();
-        expect(products.length, mockResponseJson.length);
+        expect(products.length, mockResponseJsonProducts.length);
         for (var i = 0; i < mockResponseJson.length; i++) {
           final product = products[i];
-          final jsonProduct = mockResponseJson[i];
+          final jsonProduct = mockResponseJsonProducts[i];
           expect(product.title, jsonProduct['title']);
           expect(product.description, jsonProduct['description']);
           expect(product.price, jsonProduct['price']);

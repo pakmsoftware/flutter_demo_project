@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/providers/auth_provider.dart';
 import 'package:flutter_project/widgets/auth/name_input.dart';
 import 'package:flutter_project/widgets/auth/password_input.dart';
 import 'package:flutter_project/widgets/auth/register_form.dart';
 import 'package:flutter_project/widgets/auth/sign_button.dart';
 import 'package:flutter_project/widgets/auth/username_input.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mockito/mockito.dart';
 
+import '../../screens/login_screen_test.mocks.dart';
 import '../test_helper.dart';
 import 'test_input_helper.dart';
 
 void main() {
+  setUpAll(() {
+    final mockProvider = MockAuthProvider();
+    when(mockProvider.isSubmitting).thenAnswer((realInvocation) => false);
+    when(mockProvider.errorMessage).thenAnswer((realInvocation) => null);
+    GetIt.I.registerLazySingleton<AuthProvider>(() => mockProvider);
+  });
+  tearDownAll(() {
+    GetIt.I.reset();
+  });
   group('RegisterForm', () {
     group('UserNameInput', () {
       TestInputHelper.testLoginTextInput(

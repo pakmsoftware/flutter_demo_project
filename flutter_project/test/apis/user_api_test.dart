@@ -2,15 +2,25 @@ import 'dart:convert';
 
 import 'package:flutter_project/apis/user_api.dart';
 import 'package:flutter_project/models/user.dart';
+import 'package:flutter_project/providers/auth_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
 
-import 'user_api_test.mocks.dart';
+import 'products_api_test.mocks.dart';
 
 @GenerateMocks([http.Client])
 void main() {
+  setUpAll(() async {
+    final authProvider = MockAuthProvider();
+    when(authProvider.jwtToken).thenAnswer((_) => '');
+    GetIt.I.registerLazySingleton<AuthProvider>(() => authProvider);
+  });
+  tearDownAll(() async {
+    GetIt.I.reset();
+  });
   group('UserApi', () {
     group('addUser', () {
       test('addUser throws exception if not 200', () async {
