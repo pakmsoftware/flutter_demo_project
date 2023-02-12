@@ -31,7 +31,7 @@ class _ProductListViewState extends State<ProductListView>
       // at the bottom
       // call get it and fetch more elements
       if (scrollController.position.atEdge &&
-          scrollController.position.pixels == 0) {
+          scrollController.position.pixels != 0) {
         currentPageResult = GetIt.instance<ProductProvider>().currentPageList;
         if (currentPageResult.hasMorePages) {
           GetIt.instance<ProductProvider>()
@@ -42,9 +42,15 @@ class _ProductListViewState extends State<ProductListView>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    products = get<ProductProvider>().allProducts;
-    isFetching = get<ProductProvider>().isSearching;
+    products = watchOnly((ProductProvider provider) => provider.allProducts);
+    isFetching = watchOnly((ProductProvider provider) => provider.isSearching);
     return ListView.builder(
       controller: scrollController,
       itemCount: products.length + (isFetching ? 1 : 0),
