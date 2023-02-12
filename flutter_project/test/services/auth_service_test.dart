@@ -2,29 +2,18 @@ import 'package:flutter_project/apis/user_api.dart';
 import 'package:flutter_project/db/repositories/product_cache_repository.dart';
 import 'package:flutter_project/db/repositories/product_repository.dart';
 import 'package:flutter_project/db/repositories/user_repository.dart';
-import 'package:flutter_project/providers/auth_provider.dart';
 import 'package:flutter_project/services/auth_service.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_project/models/user.dart';
 import 'package:flutter_project/db/collections/user.dart' as isar;
 
-import '../apis/products_api_test.mocks.dart';
 import 'auth_service_test.mocks.dart';
 
 @GenerateMocks(
     [UserApi, UserRepository, ProductRepository, ProductCacheRepository])
 void main() {
-  // setUpAll(() async {
-  //   final authProvider = MockAuthProvider();
-  //   when(authProvider.jwtToken).thenAnswer((_) => '');
-  //   GetIt.I.registerLazySingleton<AuthProvider>(() => authProvider);
-  // });
-  // tearDownAll(() async {
-  //   GetIt.I.reset();
-  // });
   group('AuthService', () {
     group('getInitialUser', () {
       test('returns null if user does not exist in db', () async {
