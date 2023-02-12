@@ -107,4 +107,11 @@ class ProductProvider extends ChangeNotifier {
     _selectedProduct = product;
     notifyListeners();
   }
+
+  void clearValues() {
+    _allResults = [];
+    _queryResults = [];
+    _currentPageList = null;
+    _selectedProduct = null;
+  }
 }

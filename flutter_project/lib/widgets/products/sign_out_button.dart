@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/providers/auth_provider.dart';
+import 'package:flutter_project/providers/product_provider.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
 class SignOutButton extends StatelessWidget with GetItMixin {
@@ -22,6 +23,7 @@ class SignOutButton extends StatelessWidget with GetItMixin {
               );
               return;
             }
+            get<ProductProvider>().clearValues();
             Navigator.of(context).pushReplacementNamed('/');
           });
         },
