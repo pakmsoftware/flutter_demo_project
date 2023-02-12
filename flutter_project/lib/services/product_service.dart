@@ -21,6 +21,13 @@ class ProductService {
     this._productRepository,
   );
 
+  Future<PagedResultList<Product>> refreshResults() async {
+    // delete cached data and search again
+    await _productCacheRepository.deleteAllProductCache();
+    await _productRepository.deleteAllProducts();
+    return await getProductsPaginated();
+  }
+
   Future<PagedResultList<Product>> getProductsPaginated({
     int pageSize = Configuration.defaultPageSize,
     int pageNumber = Configuration.defaultPageNumber,

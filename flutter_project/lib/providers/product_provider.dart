@@ -1,8 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_project/models/paged_result_list.dart';
 import 'package:flutter_project/models/product.dart';
+import 'package:flutter_project/models/token_expired_exception.dart';
+import 'package:flutter_project/providers/auth_provider.dart';
 import 'package:flutter_project/services/product_service.dart';
 import 'package:flutter_project/utils/configuration.dart';
+import 'package:get_it/get_it.dart';
 
 class ProductProvider extends ChangeNotifier {
   final ProductService _productService;
@@ -17,6 +22,9 @@ class ProductProvider extends ChangeNotifier {
   bool _isSearching = false;
   bool get isSearching => _isSearching;
 
+  bool _isRefreshingData = false;
+  bool get isRefreshingData => _isRefreshingData;
+
   // current page
   PagedResultList<Product>? _currentPageList;
   PagedResultList<Product> get currentPageList =>
@@ -29,7 +37,7 @@ class ProductProvider extends ChangeNotifier {
   bool get hasMorePages => _currentPageList?.hasMorePages ?? false;
 
   // all products
-  final List<Product> _allResults = [];
+  List<Product> _allResults = [];
   List<Product> get allProducts => _allResults;
 
   void getProducts(
@@ -48,11 +56,28 @@ class ProductProvider extends ChangeNotifier {
       _currentPageList = pageResults;
       _isSearching = false;
       notifyListeners();
+    } on TokenExpiredException catch (_) {
+      log('Caught token expired exception');
+      GetIt.instance<AuthProvider>().logout();
     } catch (e) {
       _isSearching = false;
       notifyListeners();
-      rethrow;
     }
+  }
+
+  void refreshResults() async {
+    _isRefreshingData = true;
+    notifyListeners();
+
+    _allResults = [];
+    _currentPageList = null;
+    _selectedProduct = null;
+    final results = await _productService.refreshResults();
+    _currentPageList = results;
+    _allResults.addAll(results.elements);
+
+    _isRefreshingData = false;
+    notifyListeners();
   }
 
   void setSelectedProduct(Product product) {

@@ -21,6 +21,7 @@ class _ProductListViewState extends State<ProductListView>
   late PagedResultList<Product> currentPageResult;
   late List<Product> products;
   late bool isFetching;
+  late bool isRefreshing;
 
   @override
   void initState() {
@@ -51,6 +52,9 @@ class _ProductListViewState extends State<ProductListView>
   Widget build(BuildContext context) {
     products = watchOnly((ProductProvider provider) => provider.allProducts);
     isFetching = watchOnly((ProductProvider provider) => provider.isSearching);
+    isRefreshing =
+        watchOnly((ProductProvider provider) => provider.isRefreshingData);
+    if (isRefreshing) return const Spinner();
     return ListView.builder(
       controller: scrollController,
       itemCount: products.length + (isFetching ? 1 : 0),

@@ -16,24 +16,29 @@ class ProductBasicInfo extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${product.category} > ${product.brand}',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.white54,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${product.category} > ${product.brand}',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.white54,
+                    ),
                   ),
-                ),
-                Text(
-                  product.title,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      product.title,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             //const Spacer(),
             Column(

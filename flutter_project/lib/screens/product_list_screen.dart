@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/widgets/products/product_list.dart';
+import 'package:flutter_project/widgets/products/refresh_button.dart';
 import 'package:flutter_project/widgets/products/sign_out_button.dart';
 
 class ProductListScreen extends StatelessWidget {
@@ -13,6 +14,7 @@ class ProductListScreen extends StatelessWidget {
         title: const Text('Product List'),
         centerTitle: true,
         actions: [
+          const RefreshButton(),
           SignOutButton(),
         ],
       ),

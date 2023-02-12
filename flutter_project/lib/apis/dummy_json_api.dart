@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter_project/models/token_expired_exception.dart';
 import 'package:flutter_project/providers/auth_provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -44,7 +45,14 @@ abstract class DummyJsonApi {
 
       final response =
           await httpClient.get(urlWithParameters, headers: headers);
-      if (response.statusCode != 200) throw Exception();
+      if (response.statusCode != 200) {
+        final responseMap = jsonDecode(response.body);
+        final exceptionName = responseMap['name'];
+        // check if token expired
+        if (exceptionName == 'TokenExpiredError') {
+          throw TokenExpiredException();
+        }
+      }
       final responseMap = jsonDecode(response.body);
       List<dynamic> responseJson = responseMap[collectionName];
       final mapElements = responseJson
