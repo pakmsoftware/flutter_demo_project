@@ -11,7 +11,7 @@ class ProductProvider extends ChangeNotifier {
 
   // for details screen
   Product? _selectedProduct;
-  Product? get selectedProduct => _selectedProduct;
+  Product get selectedProduct => _selectedProduct!;
 
   // for circula progress indicator
   bool _isSearching = false;
@@ -53,5 +53,10 @@ class ProductProvider extends ChangeNotifier {
       notifyListeners();
       rethrow;
     }
+  }
+
+  void setSelectedProduct(Product product) {
+    _selectedProduct = product;
+    notifyListeners();
   }
 }

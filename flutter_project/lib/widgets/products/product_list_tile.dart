@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/extensions/double_extension.dart';
+import 'package:flutter_project/providers/product_provider.dart';
 import 'package:flutter_project/screens/product_details_screen.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../models/product.dart';
 
@@ -18,12 +21,13 @@ class ProductListTile extends StatelessWidget {
         ),
       ),
       title: Text(product.title),
-      trailing: Text('${product.price} \$'),
+      trailing: Text(product.price.toPriceDollarString()),
       onTap: () => _goToDetailsScreen(context),
     );
   }
 
   void _goToDetailsScreen(BuildContext context) {
+    GetIt.instance<ProductProvider>().setSelectedProduct(product);
     Navigator.of(context).pushNamed(ProductDetailsScreen.routeName);
   }
 }
