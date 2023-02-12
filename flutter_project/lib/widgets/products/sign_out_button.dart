@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/providers/auth_provider.dart';
-import 'package:flutter_project/screens/home_screen.dart';
-import 'package:flutter_project/utils/error_helper.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
 class SignOutButton extends StatelessWidget with GetItMixin {

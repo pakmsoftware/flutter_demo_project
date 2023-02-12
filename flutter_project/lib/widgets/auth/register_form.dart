@@ -10,6 +10,8 @@ import 'package:flutter_project/widgets/spinner.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
+import '../../utils/error_helper.dart';
+
 class RegisterForm extends StatefulWidget with GetItStatefulWidgetMixin {
   RegisterForm({super.key});
 
@@ -25,12 +27,7 @@ class _RegisterFormState extends State<RegisterForm> with GetItStateMixin {
   TextEditingController lastNameController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late bool isSubmitting;
-
-  @override
-  void initState() {
-    super.initState();
-    isSubmitting = watchOnly((AuthProvider a) => a.isSubmitting);
-  }
+  late String? errorMessage;
 
   @override
   void dispose() {
@@ -45,6 +42,8 @@ class _RegisterFormState extends State<RegisterForm> with GetItStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    errorMessage = watchOnly((AuthProvider a) => a.errorMessage);
+    isSubmitting = watchOnly((AuthProvider a) => a.isSubmitting);
     return Card(
       margin: const EdgeInsets.all(20),
       shape: RoundedRectangleBorder(
@@ -72,7 +71,7 @@ class _RegisterFormState extends State<RegisterForm> with GetItStateMixin {
               // confirm password
               ConfirmPasswordInput(
                 controller: confirmPasswordController,
-                passwordInput: passwordController.text.trim(),
+                passwordController: passwordController,
               ),
               const InputSpaceDivider(),
 
@@ -97,6 +96,8 @@ class _RegisterFormState extends State<RegisterForm> with GetItStateMixin {
                       text: 'Sign Up',
                       onClickFn: () => _register(),
                     ),
+              if (errorMessage != null)
+                const Text(ErrorHelper.defaultErrorText),
             ],
           ),
         ),

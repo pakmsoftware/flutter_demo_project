@@ -5,7 +5,7 @@ class LoginTextInput extends StatelessWidget {
   final IconData iconData;
   final String? Function(String?) validationFn;
   final String? Function(String?, String?)? validationFnExtra;
-  final String? validationFnExtraArg;
+  final TextEditingController? validationFnExtraArg;
   final TextInputType keyboardType;
   final int maxLength;
   final bool isObscure;
@@ -29,7 +29,7 @@ class LoginTextInput extends StatelessWidget {
       controller: controller,
       validator: (input) => validationFnExtra == null
           ? validationFn(input)
-          : validationFnExtra!(input, validationFnExtraArg),
+          : validationFnExtra!(input, validationFnExtraArg!.text),
       decoration: InputDecoration(
         prefixIcon: Icon(iconData),
         counterText: '',

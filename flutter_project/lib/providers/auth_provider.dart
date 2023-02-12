@@ -46,13 +46,18 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     isSubmitting = true;
     notifyListeners();
-    final user = await _authService.register(
-      username: username,
-      password: password,
-      firstName: firstName,
-      lastName: lastName,
-    );
-    _user = user;
+    try {
+      final user = await _authService.register(
+        username: username,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+      );
+      _user = user;
+    } catch (e) {
+      _errorMessage = ErrorHelper.defaultErrorText;
+    }
+
     isSubmitting = false;
     notifyListeners();
   }

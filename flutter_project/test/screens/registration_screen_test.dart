@@ -12,7 +12,7 @@ void main() {
     testWidgets('contains proper app bar', (widgetTester) async {
       await TestHelper.pumpMaterialAppWidget(
         widgetTester: widgetTester,
-        homeWidget: const RegistrationScreen(),
+        homeWidget: RegistrationScreen(),
       );
 
       final appBar = find.byType(AppBar);
@@ -25,7 +25,7 @@ void main() {
     testWidgets('contains GradientScreenContainer', (widgetTester) async {
       await TestHelper.pumpMaterialAppWidget(
         widgetTester: widgetTester,
-        homeWidget: const RegistrationScreen(),
+        homeWidget: RegistrationScreen(),
       );
 
       final finder = find.byType(GradientScreenContainer);
@@ -35,7 +35,7 @@ void main() {
     testWidgets('contains RegisterForm', (widgetTester) async {
       await TestHelper.pumpMaterialAppWidget(
         widgetTester: widgetTester,
-        homeWidget: const RegistrationScreen(),
+        homeWidget: RegistrationScreen(),
       );
 
       final finder = find.byType(RegisterForm);
@@ -45,7 +45,7 @@ void main() {
     testWidgets('does not contain LogoText', (widgetTester) async {
       await TestHelper.pumpMaterialAppWidget(
         widgetTester: widgetTester,
-        homeWidget: const RegistrationScreen(),
+        homeWidget: RegistrationScreen(),
       );
 
       final finder = find.byType(LogoText);
