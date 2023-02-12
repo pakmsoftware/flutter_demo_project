@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter_project/providers/auth_provider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
 // custom client class for dummyjson API
@@ -17,8 +19,7 @@ abstract class DummyJsonApi {
   };
 
   Future<Map<String, String>> _getAuthHeaders() async {
-    // TODO: get token from isar/change notifier
-    const token = '';
+    final token = GetIt.instance<AuthProvider>().jwtToken;
     final authHeader = {
       'Authorization': 'Bearer $token',
     };
