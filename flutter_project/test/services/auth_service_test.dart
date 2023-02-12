@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_project/models/user.dart';
+import 'package:flutter_project/db/collections/user.dart' as isar;
 
 import 'auth_service_test.mocks.dart';
 
@@ -14,6 +15,57 @@ import 'auth_service_test.mocks.dart';
     [UserApi, UserRepository, ProductRepository, ProductCacheRepository])
 void main() {
   group('AuthService', () {
+    group('getInitialUser', () {
+      test('returns null if user does not exist in db', () async {
+        final userApiMock = MockUserApi();
+        final userRepoMock = MockUserRepository();
+        final productRepoMock = MockProductRepository();
+        final productCacheMock = MockProductCacheRepository();
+        when(userRepoMock.getUser()).thenAnswer((_) async => null);
+
+        final authService = AuthService(
+          userApiMock,
+          userRepoMock,
+          productRepoMock,
+          productCacheMock,
+        );
+
+        final response = await authService.getInitialUser();
+        expect(response, null);
+      });
+      test('returns user if user exists in db', () async {
+        final userApiMock = MockUserApi();
+        final userRepoMock = MockUserRepository();
+        final productRepoMock = MockProductRepository();
+        final productCacheMock = MockProductCacheRepository();
+        final dbUser = isar.User(
+          createdDate: DateTime.now(),
+          firstName: 'firstName',
+          jwtToken: 'token',
+          userId: 'id',
+          lastName: 'lastName',
+        );
+        when(userRepoMock.getUser()).thenAnswer(
+          (_) async => dbUser,
+        );
+
+        final authService = AuthService(
+          userApiMock,
+          userRepoMock,
+          productRepoMock,
+          productCacheMock,
+        );
+
+        final response = await authService.getInitialUser();
+
+        expect(response!.apiId, dbUser.userId);
+        expect(response.firstName, dbUser.firstName);
+        expect(response.lastName, dbUser.lastName);
+        expect(response.jwtToken, dbUser.jwtToken);
+        expect(response.userName, null);
+        expect(response.password, null);
+      });
+    });
     group('login', () {
       test('throws exception if api throws exception', () {
         final userApiMock = MockUserApi();

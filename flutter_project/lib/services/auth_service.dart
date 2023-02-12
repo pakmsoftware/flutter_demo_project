@@ -43,6 +43,19 @@ class AuthService {
     }
   }
 
+  // on startup check if user exists in storage so that jwt token can be used
+  // without logging in
+  Future<User?> getInitialUser() async {
+    try {
+      final isarUser = await _userRepository.getUser();
+      if (isarUser == null) return null;
+      return User.fromIsar(isarUser);
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
+
   Future<User> login(String userName, String password) async {
     try {
       final userToLogin = User(userName: userName, password: password);
