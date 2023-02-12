@@ -110,11 +110,13 @@ class _RegisterFormState extends State<RegisterForm> with GetItStateMixin {
     if (!formKey.currentState!.validate()) return;
 
     // provider register event
-    GetIt.instance<AuthProvider>().register(
-      username: userNameController.text.trim(),
-      password: passwordController.text.trim(),
-      firstName: firstNameController.text.trim(),
-      lastName: lastNameController.text.trim(),
-    );
+    GetIt.instance<AuthProvider>()
+        .register(
+          username: userNameController.text.trim(),
+          password: passwordController.text.trim(),
+          firstName: firstNameController.text.trim(),
+          lastName: lastNameController.text.trim(),
+        )
+        .then((value) => Navigator.of(context).pop());
   }
 }

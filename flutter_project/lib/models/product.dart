@@ -34,12 +34,13 @@ class Product {
         (json['images'] as List<dynamic>).map((e) => e.toString()).toList();
     final price = _mapNumber(json['price']);
     final rating = _mapNumber(json['rating']);
+    final discount = _mapNumber(json['discountPercentage']);
     return Product(
       id: json['id'],
       title: json['title'],
       description: json['description'],
       price: price,
-      discountPercentage: json['discountPercentage'],
+      discountPercentage: discount,
       rating: rating,
       stock: json['stock'],
       brand: json['brand'],

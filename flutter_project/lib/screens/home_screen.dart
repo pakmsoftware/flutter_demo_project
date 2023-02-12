@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/providers/auth_provider.dart';
-import 'package:flutter_project/providers/product_provider.dart';
 import 'package:flutter_project/screens/login_screen.dart';
 import 'package:flutter_project/screens/product_list_screen.dart';
 import 'package:flutter_project/widgets/spinner.dart';
@@ -35,7 +34,6 @@ class HomeScreen extends StatelessWidget with GetItMixin {
 
   Widget _buildLoginOrProductsScreen(bool isLogged) {
     if (isLogged) {
-      get<ProductProvider>().getProducts(0);
       return const ProductListScreen();
     }
     return const LoginScreen();

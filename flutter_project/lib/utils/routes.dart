@@ -7,7 +7,7 @@ import 'package:flutter_project/screens/registration_screen.dart';
 class Routes {
   static Map<String, Widget Function(BuildContext ctx)> allRoutes = {
     LoginScreen.routeName: (ctx) => const LoginScreen(),
-    RegistrationScreen.routeName: (ctx) => RegistrationScreen(),
+    RegistrationScreen.routeName: (ctx) => const RegistrationScreen(),
     HomeScreen.routeName: (ctx) => HomeScreen(),
     ProductListScreen.routeName: (ctx) => const ProductListScreen(),
   };
