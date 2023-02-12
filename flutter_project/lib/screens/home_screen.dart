@@ -14,6 +14,9 @@ class HomeScreen extends StatelessWidget with GetItMixin {
 
   @override
   Widget build(BuildContext context) {
+    final isLogged = watchOnly((AuthProvider a) {
+      return a.isLoggedIn;
+    });
     return Scaffold(
       body: FutureBuilder<User?>(
         future: get<AuthProvider>().initializeOnStartup(),
@@ -24,16 +27,13 @@ class HomeScreen extends StatelessWidget with GetItMixin {
           if (snapshot.hasError || !snapshot.hasData) {
             return const LoginScreen();
           }
-          return _buildLoginOrProductsScreen();
+          return _buildLoginOrProductsScreen(isLogged);
         },
       ),
     );
   }
 
-  Widget _buildLoginOrProductsScreen() {
-    final isLogged = watchOnly((AuthProvider a) {
-      return a.isLoggedIn;
-    });
+  Widget _buildLoginOrProductsScreen(bool isLogged) {
     if (isLogged) {
       get<ProductProvider>().getProducts(0);
       return const ProductListScreen();
