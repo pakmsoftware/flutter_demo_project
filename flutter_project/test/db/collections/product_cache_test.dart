@@ -9,8 +9,8 @@ void main() {
       test('fromPagedResultList', () {
         const ids = [1, 2, 3, 4, 5];
         const pageSize = 20;
-        const skip = 60;
-        const cacheKey = 'pageSize=${pageSize}skip=$skip';
+        const pageNumber = 60;
+        const cacheKey = 'pageSize=${pageSize}pageNumber=$pageNumber';
         final List<Product> products = List.generate(
           ids.length,
           (index) => Product(
@@ -29,7 +29,7 @@ void main() {
         );
         final pagedResult = PagedResultList<Product>(
           pageSize: pageSize,
-          skip: skip,
+          pageNumber: pageNumber,
           elements: products,
         );
 

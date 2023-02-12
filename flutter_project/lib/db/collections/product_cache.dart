@@ -23,8 +23,8 @@ class ProductCache {
   factory ProductCache.fromPagedResultList(
       PagedResultList<Product> serviceResult) {
     return ProductCache(
-      cacheKey:
-          CacheHelper.getCacheKey(serviceResult.pageSize, serviceResult.skip),
+      cacheKey: CacheHelper.getCacheKey(
+          serviceResult.pageSize, serviceResult.pageNumber),
       productIdList: serviceResult.elements.map((e) => e.id).toList(),
       expirationDate: DateTime.now().add(
         const Duration(hours: 3),

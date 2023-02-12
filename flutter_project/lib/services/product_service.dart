@@ -35,7 +35,7 @@ class ProductService {
         if (cachedResults != null) {
           return PagedResultList<Product>(
             pageSize: pageSize,
-            skip: skip,
+            pageNumber: skip,
             elements: cachedResults,
           );
         }
@@ -48,7 +48,7 @@ class ProductService {
       );
       final pagedResult = PagedResultList<Product>(
         pageSize: pageSize,
-        skip: skip,
+        pageNumber: pageNumber,
         elements: apiResults,
       );
 

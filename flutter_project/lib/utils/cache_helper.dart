@@ -1,5 +1,5 @@
 class CacheHelper {
-  static String getCacheKey(int pageSize, int skip) {
-    return 'pageSize=${pageSize}skip=$skip';
+  static String getCacheKey(int pageSize, int pageNumber) {
+    return 'pageSize=${pageSize}pageNumber=$pageNumber';
   }
 }
