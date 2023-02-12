@@ -56,3 +56,5 @@ Unit tests are under:
     test\models
     test\services
     test\utils
+
+Total number of tests: 80, passing: 80
