@@ -40,6 +40,10 @@ class ProductProvider extends ChangeNotifier {
   List<Product> _allResults = [];
   List<Product> get allProducts => _allResults;
 
+  // query products
+  List<Product>? _queryResults;
+  List<Product>? get queryResults => _queryResults;
+
   void getProducts(
     int pageNumber, [
     int pageSize = Configuration.defaultPageSize,
@@ -65,11 +69,13 @@ class ProductProvider extends ChangeNotifier {
     }
   }
 
+  // delete all database product data and call api again to get fresh data
   void refreshResults() async {
     _isRefreshingData = true;
     notifyListeners();
 
     _allResults = [];
+    _queryResults = null;
     _currentPageList = null;
     _selectedProduct = null;
     final results = await _productService.refreshResults();
@@ -77,6 +83,23 @@ class ProductProvider extends ChangeNotifier {
     _allResults.addAll(results.elements);
 
     _isRefreshingData = false;
+    notifyListeners();
+  }
+
+  // search only from stored provider data (allResults)
+  // development for future: implement searching by query in API with paging
+  // and storing results in Isar as cache (upated cache key with query param)
+  Future searchByQuery(String query) async {
+    if (query.isEmpty || _allResults.isEmpty) {
+      _queryResults = null;
+      notifyListeners();
+      return;
+    }
+
+    _queryResults = _allResults
+        .where((product) =>
+            product.title.toLowerCase().contains(query.toLowerCase()))
+        .toList();
     notifyListeners();
   }
 

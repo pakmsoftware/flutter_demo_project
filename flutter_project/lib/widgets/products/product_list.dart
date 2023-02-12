@@ -10,7 +10,7 @@ class ProductList extends StatelessWidget {
     return Column(
       children: [
         // search bar
-        const SearchBar(),
+        SearchBar(),
         // scrollable list
         Expanded(
           child: ProductListView(),

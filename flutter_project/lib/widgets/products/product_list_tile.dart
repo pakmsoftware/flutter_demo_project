@@ -23,6 +23,8 @@ class ProductListTile extends StatelessWidget {
   }
 
   void _goToDetailsScreen(BuildContext context) {
+    // close keyboard
+    FocusManager.instance.primaryFocus?.unfocus();
     GetIt.instance<ProductProvider>().setSelectedProduct(product);
     Navigator.of(context).pushNamed(ProductDetailsScreen.routeName);
   }

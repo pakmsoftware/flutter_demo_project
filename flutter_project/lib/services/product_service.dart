@@ -38,8 +38,7 @@ class ProductService {
       final cacheKey = CacheHelper.getCacheKey(pageSize, skip);
       if (useCache) {
         // firstly try to get results from cache and return if cache contains it
-        final cachedResults =
-            await _getProductsFromCache(pageSize, skip, cacheKey);
+        final cachedResults = await _getProductsFromCache(cacheKey);
         if (cachedResults != null) {
           return PagedResultList<Product>(
             pageSize: pageSize,
@@ -71,8 +70,7 @@ class ProductService {
     }
   }
 
-  Future<List<Product>?> _getProductsFromCache(
-      int pageSize, int skip, String cacheKey) async {
+  Future<List<Product>?> _getProductsFromCache(String cacheKey) async {
     final productCache =
         await _productCacheRepository.getProductCache(cacheKey);
     if (productCache == null) return null;

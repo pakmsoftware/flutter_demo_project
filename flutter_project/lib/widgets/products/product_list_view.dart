@@ -20,6 +20,7 @@ class _ProductListViewState extends State<ProductListView>
   late ScrollController scrollController;
   late PagedResultList<Product> currentPageResult;
   late List<Product> products;
+  late List<Product>? queryProducts;
   late bool isFetching;
   late bool isRefreshing;
 
@@ -33,10 +34,12 @@ class _ProductListViewState extends State<ProductListView>
       // call get it and fetch more elements
       if (scrollController.position.atEdge &&
           scrollController.position.pixels != 0) {
-        currentPageResult = GetIt.instance<ProductProvider>().currentPageList;
+        final provider = GetIt.instance<ProductProvider>();
+        // do not paginate when having search results
+        if (provider.queryResults != null) return;
+        currentPageResult = provider.currentPageList;
         if (currentPageResult.hasMorePages) {
-          GetIt.instance<ProductProvider>()
-              .getProducts(currentPageResult.pageNumber + 1);
+          provider.getProducts(currentPageResult.pageNumber + 1);
         }
       }
     });
@@ -51,19 +54,22 @@ class _ProductListViewState extends State<ProductListView>
   @override
   Widget build(BuildContext context) {
     products = watchOnly((ProductProvider provider) => provider.allProducts);
+    queryProducts =
+        watchOnly((ProductProvider provider) => provider.queryResults);
     isFetching = watchOnly((ProductProvider provider) => provider.isSearching);
     isRefreshing =
         watchOnly((ProductProvider provider) => provider.isRefreshingData);
     if (isRefreshing) return const Spinner();
+    final shownProducts = queryProducts ?? products;
     return ListView.builder(
       controller: scrollController,
-      itemCount: products.length + (isFetching ? 1 : 0),
+      itemCount: shownProducts.length + (isFetching ? 1 : 0),
       itemBuilder: (context, index) {
-        //last element is spinner when searching mode
-        if (index == products.length) {
+        // last element is spinner when searching mode
+        if (index == shownProducts.length) {
           return const Spinner();
         }
-        final product = products[index];
+        final product = shownProducts[index];
         return ProductListTile(product);
       },
     );
